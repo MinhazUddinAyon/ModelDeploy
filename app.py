@@ -1,105 +1,90 @@
-import pandas as pd
-import numpy as np
-import joblib
-import time
-from sklearn.pipeline import Pipeline
+from flask import Flask, render_template, request,redirect,session, jsonify
+from db import Database
+#import requests
+import helper
+
+app = Flask(__name__)
+dbo = Database()
+app.secret_key = '1234'
+
+@app.route('/')
+def home():
+    return render_template('main.html')
+@app.route('/register')
+def register():
+    return render_template('Registration.html')
+
+@app.route('/register/input', methods=['post'])
+def registerInput():
+    Name = request.form.get('personName')
+    Email = request.form.get('personEmail')
+    Pass = request.form.get('personPassword')
+    response = dbo.insert(Name, Email, Pass)
+    if response:
+        return render_template('Login.html', message="Registration Successful. Kindly login to proceed")
+    else:
+        return render_template('Registration.html', message="Email Already Exists. Kindly Register again to proceed")
+@app.route('/login')
+def login():
+    if 'counter' not in session:
+        session['counter'] = 0
+    session['counter'] += 1  # Increment counter on every access
+
+    return render_template('Login.html', counter=session['counter'])
+
+@app.route("/login/input", methods=['post'])
+def loginInput():
+    Email = request.form.get('personEmail')
+    Pass = request.form.get('personPassword')
+    response = dbo.search(Email, Pass)
+    if response:
+        session['logged_in'] = 1
+        return render_template('perform.html', message='Login Successful!')
+    else:
+        return render_template('Login.html', message='Incorrect Email/Password!')
+
+@app.route('/action')
+def action():
+    return render_template('perform.html')
+
+@app.route('/nextpage')
+def next_page():
+    if 'logged_in' not in session:  # Check if user is logged in
+        return redirect('/login')
+
+    return render_template('nextpage.html')
 
 
-def object_cat(df):
-    categorical_cols = df.select_dtypes(include=['object']).columns
-    for col in categorical_cols:
-        df[col] = df[col].astype('category')
+#pipeline.pkl filter=lfs diff=lfs merge=lfs -text
+@app.route('/usedcar')
+def used_car():
+    if 'logged_in' not in session:  # Check if user is logged in
+        return redirect('/login')
 
-# Load the pipeline from the file
-pipe = joblib.load('optimized_pipeline.joblib')
-X = joblib.load('optimized_X.joblib')
+    return render_template('usedcar.html')
 
-def maker_name(name):
-    return list(X[name].unique())
-
-
-def HTML():
-    return X.to_html(classes='table table-striped', index=False)
-
-
-def process_data(one_df):
-    from miceforest import ImputationKernel
-    def impute_data_(X):
-        mice_kernel = ImputationKernel(data=X, num_datasets=3, save_all_iterations_data=True, random_state=57)
-        mice_kernel.mice(iterations=15, n_estimators=30)
-        X = mice_kernel.complete_data()
-        return X
-
-    print('welcome to our service. Please fill your car info correctly.')
-    if pd.Series(one_df.values[0]).count() < 17:
-        if len(X.groupby('Maker').get_group(one_df['Maker'].iloc[0])) > 1:
-
-            # Get the nan column names
-            missing = []
-            for i in one_df.columns:
-                if one_df[i].fillna(0)[0] == 0.0:
-                    missing.append(i)
-
-            print('You have missing values. Please wait to impute...')
-            start_time = time.time()
-            if one_df['Bodytype'].fillna(0)[0] == 0.0:
-                one_df = pd.concat([X.groupby('Genmodel').get_group(one_df['Genmodel'].iloc[0]), one_df],
-                                   ignore_index=True)
-                object_cat(one_df)
-                one_df = impute_data_(one_df)
-                one_df = one_df.iloc[-1].to_frame().transpose()
-            else:
-                one_df = pd.concat([X.groupby(['Genmodel', 'Bodytype']).get_group(
-                    tuple(one_df[['Genmodel', 'Bodytype']].iloc[0].values)), one_df], ignore_index=True)
-                object_cat(one_df)
-                one_df = impute_data_(one_df)
-                one_df = one_df.iloc[-1].to_frame().transpose().reset_index().drop(columns=['index'])
-
-            end_time = time.time()
-            execution_time = end_time - start_time
-
-            print(f"Time get for filling missing information: {execution_time:.4f} seconds")
-            for j in missing:
-                print(f"You missed to provide information: {j}, which is filling by: {one_df[j].values[0]}")
-            print(f"Information filling from {len(X.groupby('Maker').get_group(one_df['Maker'].iloc[0]))} stored data")
-        else:
-            print('Please provides your all information.')
-
-    one_df['Runned_Miles'] = np.sqrt(one_df['Runned_Miles'].values[0])
-    one_df['Engine_size'] = np.log1p(one_df['Engine_size'].values[0])
-    one_df['Engine_power'] = np.log1p(one_df['Engine_power'].values[0])
-
-    return one_df
-
-
-def make_prediction(maker, genmodel, bodytype, gearbox, fuel_type, runned_miles, engine_size, engine_power, average_mpg,
-                    top_speed, wheelbase,
-                    height, width, length, seat_num, door_num, cars_old):
-    data = {
-        'Maker': maker,
-        'Genmodel': genmodel,
-        'Bodytype': bodytype,
-        'Gearbox': gearbox,
-        'Fuel_type': fuel_type,
-        'Runned_Miles': runned_miles,
-        'Engine_size': engine_size,
-        'Engine_power': engine_power,
-        'Average_mpg': average_mpg,
-        'Top_speed': top_speed,
-        'Wheelbase': wheelbase,
-        'Height': height,
-        'Width': width,
-        'Length': length,
-        'Seat_num': seat_num,
-        'Door_num': door_num,
-        'Cars_old': cars_old
-    }
-    df = pd.DataFrame(data, index=[0])
-    df = process_data(df)
-    return round(np.expm1(pipe.predict(df)[0]), 2)
-
-
-'''    Genmodel = request.args.get('genmodel')
+@app.route('/makers')
+def makers():
+    maker = helper.maker_name('Maker')
+    genmodel = helper.maker_name('Genmodel')
+    bodytype = helper.maker_name('Bodytype')
+    gearbox = helper.maker_name('Gearbox')
+    fuel_type = helper.maker_name('Fuel_type')
+    average_mpg = helper.maker_name('Average_mpg')
+    cars_old = helper.maker_name('Cars_old')
+    return render_template('usedcar.html',
+                           maker = sorted(maker),
+                           genmodel=sorted(genmodel),
+                           bodytype=sorted(bodytype),
+                           gearbox=sorted(gearbox),
+                           fuel_type=sorted(fuel_type),
+                           average_mpg=sorted(average_mpg),
+                           cars_old=sorted(cars_old)
+                           )
+@app.route('/predict_car_price')
+def predict_car_price():
+    Maker = request.args.get('maker')
+    Genmodel = request.args.get('genmodel')
     Bodytype = request.args.get('bodytype')
     Gearbox = request.args.get('gearbox')
     Fuel_type = request.args.get('fuel_type')
@@ -116,9 +101,9 @@ def make_prediction(maker, genmodel, bodytype, gearbox, fuel_type, runned_miles,
     Door_num = float(request.args.get('door_num'))
     Cars_old = request.args.get('cars_old')
 
-        try:
-        return print(f'Your car price approximately: {round(np.expm1(pipe.predict(df)[0]),2)}$(dollar)')
-    except:
-        return print('Sorry! No car available in this name.')
+    prediction = helper.make_prediction(Maker, Genmodel, Bodytype, Gearbox, Fuel_type, Runned_Miles,Engine_size, Engine_power, Average_mpg, Top_speed, Wheelbase,
+                    Height, Width, Length, Seat_num, Door_num, Cars_old)
+    return render_template('usedcar.html',prediction = prediction)
 
-    '''
+#if __name__ == "__main__":
+    #app.run(debug=True,port=9000)

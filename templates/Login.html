@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <header>
+        <div><a href="/" class="logo">MN</a></div>
+        <nav>
+            <ul>
+                <li><a class="secure">You Are In Sign Up Page</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    {%if message %}
+        <!-- Popup Notification -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <p>{{message}}</p>
+            </div>
+        </div>
+
+        <!-- JavaScript to Handle Popup Display -->
+        <script>
+            function showPopup() {
+                document.getElementById('popup').style.display = 'block';
+            }
+
+            function closePopup() {
+                document.getElementById('popup').style.display = 'none';
+            }
+
+            // Show the popup after the page loads
+            window.onload = function() {
+                showPopup();
+            }
+        </script>
+    {%endif%}
+
+    <section class="hero">
+        <se class="landing-page">
+        <div class="input-box-container">
+            <h2>Enter Your Information</h2>
+            <form action="login/input" method = "post">
+                <div class="input-group">
+                    <label for="Email">Email</label>
+                    <input type="email" id="Email" name="personEmail" class="input-field" placeholder="Enter Your Email">
+                </div>
+                <div class="input-group">
+                    <label for="Password">Name</label>
+                    <input type="password" id="Password" name="personPassword" class="input-field" placeholder="Enter Your Password">
+                </div>
+            {%if not message %}
+                <button type="submit" class="submit-button">Enter</button>
+            {%endif%}
+            </form>
+            {%if message %}
+            <div class="hover-container">
+                    <a href="/login">
+                        <button class="submit-button" >Refresh</button>
+                    </a>
+                    <div class="popup2">
+                        Please Refresh
+                    </div>
+            </div>
+            {%endif %}
+        </div>
+    </section>
+
+<footer>
+        <div class="footer-content">
+            <span>AMD</span>
+            <span>Epic Games</span>
+            <span>NVIDIA</span>
+        </div>
+    </footer>
+
+</body>
+</html>

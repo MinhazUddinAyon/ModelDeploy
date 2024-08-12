@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div><a href="/nextpage" class="logo">MN</a></div>
+        <nav>
+            <ul>
+                <li><a class="secure">Used Car Price Prediction</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="hero">
+        <se class="landing-page1">
+        <div class="input-box-container">
+            <h2>Enter Your Cars Information</h2>
+            <form action="predict_car_price" method="get">
+                <div class="input-group">
+                    <label for="maker">'Maker' of the car?</label>
+                    <select id="maker" name="maker" class="input-field" required onchange="updateGenmodelOptions()">
+                        <option value="" disabled selected>Select Maker</option>
+                        {% for item in maker %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                </div>
+
+                <div class="input-group">
+                    <label for="genmodel">'Genmodel' of the car?</label>
+                    <select id="genmodel" name="genmodel" class="input-field" required>
+                        <option value="" disabled selected>Select Genmodel</option>
+                    </select><br><br>
+                </div>
+
+                <script>
+                    function updateGenmodelOptions() {
+                        // Get the selected maker
+                        var selectedMaker = document.getElementById('maker').value;
+
+                        // The genmodel list, in a format you can use with JavaScript
+                        var genmodel = [
+                            {% for item in genmodel %}
+                                { value: "{{ item.split(' ')[0] }}", text: "{{ item }}", maker: "{{ item.split(' ')[0] }}" },
+                            {% endfor %}
+                        ];
+
+                        // Get the model dropdown
+                        var modelSelect = document.getElementById('genmodel');
+
+                        // Clear previous options
+                        modelSelect.innerHTML = '<option value="" disabled selected>Select genmodel</option>';
+
+                        // Populate new options based on the selected maker
+                        genmodel.forEach(function(item) {
+                            if (item.maker === selectedMaker) {
+                                var option = document.createElement('option');
+                                option.value = item.text;
+                                option.text = item.text;
+                                modelSelect.add(option);
+                            }
+                        });
+                    }
+                </script>
+
+                <div class="input-group">
+                    <label for="bodytype">'Bodytype' of the car?</label>
+                    <select id="bodytype" name="bodytype" class="input-field" required >
+                        <option value="" disabled selected>Select Bodytype</option>
+                        {% for item in bodytype %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                </div>
+
+                <div class="input-group">
+                    <label for="gearbox">Car 'Gearbox'?</label>
+                    <select id="gearbox" name="gearbox" class="input-field" required >
+                        <option value="" disabled selected>Select Gearbox</option>
+                        {% for item in gearbox %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                </div>
+
+                <div class="input-group">
+                    <label for="fuel_type">'Fuel_type' of the car?</label>
+                    <select id="fuel_type" name="fuel_type" class="input-field" required >
+                        <option value="" disabled selected>Select Fuel_type</option>
+                        {% for item in fuel_type %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                </div>
+
+                <div class="input-group">
+                    <label for="runned_miles">Total 'Runned_Miles'</label>
+                    <input type="text" id="runned_miles" name="runned_miles" class="input-field" placeholder="Input Total Runned_Miles">
+                </div>
+
+                <div class="input-group">
+                    <label for="engine_size">'Engine_size' of the car?</label>
+                    <input type="text" id="engine_size" name="engine_size" class="input-field" placeholder="Input Engine_size">
+                </div>
+
+                <div class="input-group">
+                    <label for="engine_power">'Engine_power' of the car?</label>
+                    <input type="text" id="engine_power" name="engine_power" class="input-field" placeholder="Input Engine_power">
+                </div>
+
+                <div class="input-group">
+                    <label for="average_mpg">'Average_mpg' of the car?</label>
+                    <select id="average_mpg" name="average_mpg" class="input-field" required >
+                        <option value="" disabled selected>Select Average_mpg</option>
+                        {% for item in average_mpg %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                </div>
+
+                <div class="input-group">
+                    <label for="top_speed">'Top_speed' of the car?</label>
+                    <input type="text" id="top_speed" name="top_speed" class="input-field" placeholder="Input Top_speed">
+                </div>
+
+                <div class="input-group">
+                    <label for="wheelbase">'Wheelbase'</label>
+                    <input type="text" id="wheelbase" name="wheelbase" class="input-field" placeholder="Input Wheelbase">
+                </div>
+
+                <div class="input-group">
+                    <label for="height">'Height'</label>
+                    <input type="text" id="height" name="height" class="input-field" placeholder="Input Height">
+                </div>
+
+                <div class="input-group">
+                    <label for="width">'Width'</label>
+                    <input type="text" id="width" name="width" class="input-field" placeholder="Input Width">
+                </div>
+
+                <div class="input-group">
+                    <label for="length">'Length'</label>
+                    <input type="text" id="length" name="length" class="input-field" placeholder="Input Length">
+                </div>
+
+                <div class="input-group">
+                    <label for="seat_num">'Seat_num'</label>
+                    <input type="text" id="seat_num" name="seat_num" class="input-field" placeholder="Input Seat_num">
+                </div>
+
+                <div class="input-group">
+                    <label for="door_num">'Door_num'</label>
+                    <input type="text" id="door_num" name="door_num" class="input-field" placeholder="Input Door_num">
+                </div>
+
+                <div class="input-group">
+                    <label for="cars_old">'Cars_old'?</label>
+                    <select id="cars_old" name="cars_old" class="input-field"  >
+                        <option value="" disabled selected>Select Cars_old</option>
+                        {% for item in cars_old %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                </div>
+
+                <button type="submit" class="submit-button">Submit</button>
+                <label>Predicted 'Price' of the car:</label>
+                <select class="input-field">
+                <option value="" disabled selected>{{prediction}}</option>
+            </form>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-content">
+            <span>AMD</span>
+            <span>Epic Games</span>
+            <span>NVIDIA</span>
+        </div>
+    </footer>
+
+</body>
+</html>

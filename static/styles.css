@@ -1,0 +1,404 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Roboto, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+.landing-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-page1 {
+    height: 210vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/* Header */
+header {
+    position: absolute; /* Use absolute positioning */
+    top: 0;
+    left: 0;
+    right: 0; /* Ensure the header spans the full width */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it stays on top of other content */
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #666;
+    padding: 10px 20px;
+    transition: color 0.7s;
+}
+
+header nav ul li a:hover {
+    background: linear-gradient(45deg, rgba(98,92,190,1) 0%, rgba(65,65,162,1) 100%);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    color: #fff;
+}
+
+header .secure {
+    background: linear-gradient(45deg, rgba(98,92,190,1) 0%, rgba(65,65,162,1) 100%);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.7s;
+}
+
+header .secure:hover {
+    background: linear-gradient(45deg, rgba(65,65,162,1) 0%, rgba(98,92,190,1) 100%);
+}
+
+/* Hero Section */
+.hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, rgba(2,0,36,1) 0%, rgba(21,21,92,1) 36%, rgba(0,212,255,1) 100%);
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 55px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(111,111,172,0.1), rgba(111,111,172,0.1), rgba(111,111,172,0.1));
+    height: 70px;
+    color: white;
+    width: 110%; /* Ensure it spans the full width */
+    margin: 0px; /* Adjust margin as needed */
+}
+
+.nav-option {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    transition: background 0.3s ease-in-out;
+}
+
+.nav-option:hover {
+    /* border-radius: 5px; */
+    /* color: rgba(21,21,92,1); */
+    font-weight: bold;
+}
+/* Next Page Hero Section */
+.hero next-page-hero {
+    background: linear-gradient(135deg, #42a5f5, #478ed1, #3b78c5);
+}
+
+
+/* Footer */
+footer {
+    padding: 20px;
+    background-color: #f7f7f7;
+    text-align: center;
+    border-top: 1px solid #eaeaea;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    font-size: 14px;
+    color: #999;
+}
+/* Button Styles */
+.cta-button {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 18px;
+    color: white;
+    background-color: #ff6a5b;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #e55b4c;
+}
+
+/* Features section */
+.features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 100px 20px;
+    max-width: 2000px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    display: block; /* Makes the entire card clickable */
+    background: linear-gradient(45deg, rgba(65,65,162,0.35) 0%, rgba(98,92,190,0.35) 100%);
+    padding: 50px;
+    border-radius: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    text-decoration: none; /* Removes underline from links */
+    color: white; /* Ensures text color remains white */
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(45deg, rgba(98,92,190) 0%, rgba(65,65,162) 100%);
+}
+
+.feature-card h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.feature-card p {
+    font-size: 18px;
+    color: white;
+}
+
+/*  */
+/* Input Box Container Styling */
+.input-box-container {
+    background: linear-gradient(90deg, rgba(111,111,172,0.1), rgba(111,111,172,0.1), rgba(111,111,172,0.1));
+    padding: 100px 60px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.input-box-container:hover {
+    background: rgba(65,65,162,1)
+}
+
+.input-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+
+.input-form h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    background: linear-gradient(45deg, rgba(98,92,190,1) 0%, rgba(65,65,162,1) 100%);;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-bottom: 10px
+}
+
+.submit-button:hover {
+    background: linear-gradient(90deg, rgba(65,65,162,1) 0%, rgba(98,92,190,1) 100%);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.main-content {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Popup */
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    top: 10%; /* Adjust this value to control how far down the popup appears */
+    right: 20px; /* Align the popup to the right */
+    width: auto; /* Adjust width to fit content */
+    justify-content: flex-end; /* Align items to the right */
+    align-items: flex-start; /* Align items slightly down from the top */
+    transition: transform 0.3s ease;
+}
+
+.popup:hover {
+    transform: translateY(-10px); /* Moves the popup slightly upward on hover */
+}
+
+.popup-content {
+    background: linear-gradient(45deg, rgba(98,92,190,0.1) 0%, rgba(65,65,162,0.1) 100%);
+    padding: 7px 12px;
+    border-radius: 7px;
+    text-align: center;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+    color: #fff;
+}
+
+.popup-content:hover {
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Adds a shadow effect on hover */
+    background: linear-gradient(45deg, rgba(65,65,162,0.5) 0%, rgba(98,92,190,0.5) 100%);
+}
+
+.close-btn {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    color: rgba(255, 255, 255, 0.9); /* Black color */
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    opacity: 0; /* Hide by default */
+    visibility: hidden; /* Hide by default */
+}
+
+.popup:hover .close-btn {
+    opacity: 1; /* Show on hover */
+    visibility: visible; /* Show on hover */
+}
+
+.close-btn:hover {
+    color: rgba(98, 92, 190, 1); /* Changes the close button color on hover */
+}
+
+
+/* Basic styling for the container */
+.hover-container {
+    position: relative;
+    color: white;
+    cursor: pointer;
+}
+
+/* Styling for the pop-up */
+.popup1 {
+    display: none; /* Initially hidden */
+    position: absolute;
+    bottom: 145%; /* Position above the container */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 7px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1; /* Ensure it appears on top */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Show the pop-up on hover */
+.hover-container:hover .popup1 {
+    display: block;
+    opacity: 1; /* Fade in the pop-up */
+}
+/* Styling for the pop-up */
+.popup2 {
+    display: block; /* Initially hidden */
+    position: absolute;
+    bottom: 107%; /* Position above the container */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 7px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1; /* Ensure it appears on top */
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Back Button
+.back-button-container {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+
+}
+
+.back-button-container:hover {
+    background: linear-gradient(45deg, rgba(65,65,162) 0%, rgba(98,92,190) 100%);
+}
+*/

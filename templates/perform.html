@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning & AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">MN</div>
+        <!--<nav>
+            <ul>
+                <li><a href="#">VFX & Rendering</a></li>
+                <li><a href="/nextpage" class="#">Machine Learning & AI</a></li>
+                <li><a href="#">Inference Service</a></li>
+            </ul>
+        </nav> -->
+        <div style="display: flex; gap: 10px;">
+            <a href="#">
+                <button class="secure">Chat Bot</button>
+            </a>
+            <a href="/">
+                <button class="secure">Log Out</button>
+            </a>
+
+        </div>
+    </header>
+
+    {%if message %}
+        <!-- Popup Notification -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <p>{{message}}</p>
+            </div>
+        </div>
+
+        <!-- JavaScript to Handle Popup Display -->
+        <script>
+            function showPopup() {
+                document.getElementById('popup').style.display = 'block';
+            }
+
+            function closePopup() {
+                document.getElementById('popup').style.display = 'none';
+            }
+
+            // Show the popup after the page loads
+            window.onload = function() {
+                showPopup();
+            }
+        </script>
+    {%endif%}
+
+    <section class="hero">
+        <div class="landing-page">
+            <h1>Machine Learning & AI</h1>
+            <p>Weaverly Cloud enables you to train, fine-tune, and deploy models up to 40 times faster, offering the scalability and cost efficiency you need.</p>
+        </div>
+        <div class="nav-bar">
+            <a href="#" class="nav-option">Pixel Streaming</a>
+            <a href="/nextpage" class="nav-option">Machine Learning & AI</a>
+            <a href="#" class="nav-option">VFX & Rendering</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <span>AMD</span>
+            <span>Epic Games</span>
+            <span>NVIDIA</span>
+        </div>
+    </footer>
+
+</body>
+</html>
