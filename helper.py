@@ -1,9 +1,6 @@
 import pandas as pd
 import numpy as np
 import joblib
-import time
-from sklearn.pipeline import Pipeline
-
 
 def object_cat(df):
     categorical_cols = df.select_dtypes(include=['object']).columns
@@ -23,7 +20,6 @@ def HTML():
 
 
 def process_data(one_df):
-    from miceforest import ImputationKernel
     def impute_data_(X):
         mice_kernel = ImputationKernel(data=X, num_datasets=3, save_all_iterations_data=True, random_state=57)
         mice_kernel.mice(iterations=15, n_estimators=30)
@@ -31,40 +27,6 @@ def process_data(one_df):
         return X
 
     print('welcome to our service. Please fill your car info correctly.')
-    if pd.Series(one_df.values[0]).count() < 17:
-        if len(X.groupby('Maker').get_group(one_df['Maker'].iloc[0])) > 1:
-
-            # Get the nan column names
-            missing = []
-            for i in one_df.columns:
-                if one_df[i].fillna(0)[0] == 0.0:
-                    missing.append(i)
-
-            print('You have missing values. Please wait to impute...')
-            start_time = time.time()
-            if one_df['Bodytype'].fillna(0)[0] == 0.0:
-                one_df = pd.concat([X.groupby('Genmodel').get_group(one_df['Genmodel'].iloc[0]), one_df],
-                                   ignore_index=True)
-                object_cat(one_df)
-                one_df = impute_data_(one_df)
-                one_df = one_df.iloc[-1].to_frame().transpose()
-            else:
-                one_df = pd.concat([X.groupby(['Genmodel', 'Bodytype']).get_group(
-                    tuple(one_df[['Genmodel', 'Bodytype']].iloc[0].values)), one_df], ignore_index=True)
-                object_cat(one_df)
-                one_df = impute_data_(one_df)
-                one_df = one_df.iloc[-1].to_frame().transpose().reset_index().drop(columns=['index'])
-
-            end_time = time.time()
-            execution_time = end_time - start_time
-
-            print(f"Time get for filling missing information: {execution_time:.4f} seconds")
-            for j in missing:
-                print(f"You missed to provide information: {j}, which is filling by: {one_df[j].values[0]}")
-            print(f"Information filling from {len(X.groupby('Maker').get_group(one_df['Maker'].iloc[0]))} stored data")
-        else:
-            print('Please provides your all information.')
-
     one_df['Runned_Miles'] = np.sqrt(one_df['Runned_Miles'].values[0])
     one_df['Engine_size'] = np.log1p(one_df['Engine_size'].values[0])
     one_df['Engine_power'] = np.log1p(one_df['Engine_power'].values[0])
@@ -122,3 +84,4 @@ def make_prediction(maker, genmodel, bodytype, gearbox, fuel_type, runned_miles,
         return print('Sorry! No car available in this name.')
 
     '''
+

@@ -20,7 +20,7 @@ body, html {
 }
 
 .landing-page1 {
-    height: 210vh;
+    height: 250vh;
     display: flex;
     flex-direction: column;
     justify-content: center;

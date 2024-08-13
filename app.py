@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request,redirect,session, jsonify
+from flask import Flask, render_template,request, redirect,session
 from db import Database
-#import requests
 import helper
 
 app = Flask(__name__)
